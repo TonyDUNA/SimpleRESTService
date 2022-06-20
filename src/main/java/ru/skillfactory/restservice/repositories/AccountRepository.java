@@ -8,7 +8,7 @@ import ru.skillfactory.restservice.models.Account;
 
 
 @org.springframework.stereotype.Repository
-public interface Repository extends JpaRepository<Account, Integer> {
+public interface AccountRepository extends JpaRepository<Account, Integer> {
 
     @Query("select a.balance from Account a where a.id = :id")
     Integer getBalanceById(@Param("id") int id);
@@ -17,6 +17,7 @@ public interface Repository extends JpaRepository<Account, Integer> {
     @Query(value = "update Account a set a.balance = :balance where a.id = :id")
     void saveUpdatedBalance(@Param("id") int id,
                            @Param("balance") Integer balance);
+
 
 }
 

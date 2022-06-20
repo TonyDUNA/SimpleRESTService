@@ -2,6 +2,7 @@ package ru.skillfactory.restservice.models;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
+import java.util.List;
 
 
 @Entity
@@ -19,6 +20,10 @@ public class Account {
     @Column(name = "amount")
     @Min(value = 0, message = "amount не может быть меньше нуля")
     private Integer amount;
+
+
+    @OneToMany(mappedBy = "accountId")
+    private List<Operations> operationsList;
 
     public Account(){
 
@@ -51,5 +56,13 @@ public class Account {
 
     public void setAmount(Integer amount) {
         this.amount = amount;
+    }
+
+    public List<Operations> getOperationsList() {
+        return operationsList;
+    }
+
+    public void setOperationsList(List<Operations> operationsList) {
+        this.operationsList = operationsList;
     }
 }

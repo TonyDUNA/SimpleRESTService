@@ -5,47 +5,61 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.skillfactory.restservice.models.Account;
-import ru.skillfactory.restservice.services.Service;
+import ru.skillfactory.restservice.models.Operations;
+import ru.skillfactory.restservice.services.AccountService;
+import ru.skillfactory.restservice.services.OperationsService;
 import ru.skillfactory.restservice.util.AccountErrorResponse;
 import ru.skillfactory.restservice.util.BalanceNotFoundException;
 import ru.skillfactory.restservice.util.NegativeAmountException;
 import ru.skillfactory.restservice.util.NotEnoughFundsException;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController // @Controller + @ResponseBody на каждом методе
 @RequestMapping("/accounts")
 public class AccountController {
-    private final Service service;
+    private final AccountService accountService;
+    private final OperationsService operationsService;
 
     @Autowired
-    public AccountController(Service service) {
-        this.service = service;
+    public AccountController(AccountService accountService, OperationsService operationsService) {
+        this.accountService = accountService;
+        this.operationsService = operationsService;
     }
 
     @GetMapping()
     public List<Account> getAccount() {
-        return service.findAll();
+        return accountService.findAll();
     }
 
     // check balance
     @GetMapping("/{id}")
     public Integer getBalance(@PathVariable int id) {
-        return service.checkBalance(id);
+        return accountService.checkBalance(id);
     }
 
     // putMoney
     @PostMapping("/put")
-    public Integer addMoney(@RequestBody @Valid Account account) {
+    public Integer addMoney(@RequestBody @Valid Account account, Operations operations) {
 
-        return service.putMoney(account.getId(), account.getAmount());
+        return accountService.putMoney(account.getId(), account.getAmount(), operations);
+
+
     }
 
     // takeMoney
     @PostMapping("/take")
     public Integer takeMoney(@RequestBody @Valid Account account) {
-        return service.takeMoney(account.getId(), account.getAmount());
+
+        return accountService.takeMoney(account.getId(), account.getAmount());
+    }
+
+    // get operations
+    @GetMapping("/{id}/operations")
+    public List<Operations> getOperationList(@PathVariable int id) {
+        return operationsService.getOperationList(id);
     }
 
     @ExceptionHandler
