@@ -7,9 +7,9 @@ import ru.skillfactory.restservice.models.Account;
 import ru.skillfactory.restservice.models.Operations;
 import ru.skillfactory.restservice.repositories.AccountRepository;
 import ru.skillfactory.restservice.repositories.OperationsRepository;
-import ru.skillfactory.restservice.util.BalanceNotFoundException;
-import ru.skillfactory.restservice.util.NegativeAmountException;
-import ru.skillfactory.restservice.util.NotEnoughFundsException;
+import ru.skillfactory.restservice.exception.BalanceNotFoundException;
+import ru.skillfactory.restservice.exception.NegativeAmountException;
+import ru.skillfactory.restservice.exception.NotEnoughFundsException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

@@ -1,4 +1,4 @@
-package ru.skillfactory.restservice.util;
+package ru.skillfactory.restservice.exception;
 
 public class NegativeAmountException extends RuntimeException {
 }

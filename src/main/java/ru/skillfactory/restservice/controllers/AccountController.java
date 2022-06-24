@@ -1,7 +1,6 @@
 package ru.skillfactory.restservice.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,10 +9,10 @@ import ru.skillfactory.restservice.models.Operations;
 import ru.skillfactory.restservice.models.OperationsResponse;
 import ru.skillfactory.restservice.services.AccountService;
 import ru.skillfactory.restservice.services.OperationsService;
-import ru.skillfactory.restservice.util.AccountErrorResponse;
-import ru.skillfactory.restservice.util.BalanceNotFoundException;
-import ru.skillfactory.restservice.util.NegativeAmountException;
-import ru.skillfactory.restservice.util.NotEnoughFundsException;
+import ru.skillfactory.restservice.exception.AccountErrorResponse;
+import ru.skillfactory.restservice.exception.BalanceNotFoundException;
+import ru.skillfactory.restservice.exception.NegativeAmountException;
+import ru.skillfactory.restservice.exception.NotEnoughFundsException;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
