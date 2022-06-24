@@ -11,8 +11,8 @@ import ru.skillfactory.restservice.util.BalanceNotFoundException;
 import ru.skillfactory.restservice.util.NegativeAmountException;
 import ru.skillfactory.restservice.util.NotEnoughFundsException;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @org.springframework.stereotype.Service
 @Transactional(readOnly = true)
@@ -26,10 +26,6 @@ public class AccountService {
         this.operationsRepository = operationsRepository;
     }
 
-    public List<Account> findAll() {
-        return accountRepository.findAll();
-    }
-
     public Integer checkBalance(int id) {
 
         Integer checkedBalance = accountRepository.getBalanceById(id);
@@ -41,7 +37,7 @@ public class AccountService {
     }
 
     @Transactional
-    public int putMoney(int id, Integer amount, Operations operations) {
+    public int putMoney(int id, Integer amount, Account account, Operations operations) {
 
         Integer currentBalance = accountRepository.getBalanceById(id);
         if (currentBalance == null) {
@@ -54,16 +50,18 @@ public class AccountService {
 
             // addOperations
             operations.setAmount(amount);
-            operations.setAccountId(new Account());
+            operations.setAccount(account);
             operations.setOperationType(1); //put=1
             operations.setOperationTime(LocalDateTime.now());
+            operations.setOperationDate(LocalDate.now());
             operationsRepository.save(operations);
+
             return updatedBalance;
         }
     }
 
     @Transactional
-    public Integer takeMoney(int id, Integer amount) {
+    public Integer takeMoney(int id, Integer amount, Account account, Operations operations) {
         Integer currentBalance = accountRepository.getBalanceById(id);
         if (currentBalance == null) {
             throw new BalanceNotFoundException();
@@ -74,17 +72,19 @@ public class AccountService {
         } else {
             int updatedBalance = currentBalance - amount;
 
+            // takeOperations
+            operations.setAmount(amount);
+            operations.setAccount(account);
+            operations.setOperationType(2); //take=2
+            operations.setOperationTime(LocalDateTime.now());
+            operations.setOperationDate(LocalDate.now());
+            operationsRepository.save(operations);
+
             accountRepository.saveUpdatedBalance(id, updatedBalance);
 
             return updatedBalance;
         }
     }
 
-//    public Operations operationsUpdateByPutMoney(Operations operations) {
-//        Operations o = new Operations();
-//        o.setOperationType(1); //put=1
-//        o.setOperationTime(LocalDateTime.now());
-//        return o;
-//
-//    }
+
 }

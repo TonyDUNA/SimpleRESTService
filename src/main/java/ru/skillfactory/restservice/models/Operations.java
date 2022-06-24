@@ -2,7 +2,9 @@ package ru.skillfactory.restservice.models;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Table(name = "Operations")
@@ -14,7 +16,7 @@ public class Operations {
 
     @ManyToOne
     @JoinColumn(name = "account_id", referencedColumnName = "id")
-    private Account accountId;
+    private Account account;
 
 
     @Column(name = "operation_type")
@@ -27,14 +29,21 @@ public class Operations {
     @Column(name = "operation_time")
     private LocalDateTime operationTime;
 
+    @Column(name = "operation_date")
+    private LocalDate operationDate;
+
     public Operations() {
     }
 
-    public Operations(int operationId, Integer userId, Integer operationType, Integer amount, LocalDateTime operationTime) {
+
+    public Operations(int operationId, Account account, Integer operationType,
+                      Integer amount, LocalDateTime operationTime, LocalDate operationDate) {
         this.operationId = operationId;
+        this.account = account;
         this.operationType = operationType;
         this.amount = amount;
         this.operationTime = operationTime;
+        this.operationDate = operationDate;
     }
 
     public int getOperationId() {
@@ -45,6 +54,13 @@ public class Operations {
         this.operationId = operationId;
     }
 
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
+    }
 
     public Integer getOperationType() {
         return operationType;
@@ -62,14 +78,6 @@ public class Operations {
         this.amount = amount;
     }
 
-    public Account getAccountId() {
-        return accountId;
-    }
-
-    public void setAccountId(Account accountId) {
-        this.accountId = accountId;
-    }
-
     public LocalDateTime getOperationTime() {
         return operationTime;
     }
@@ -78,4 +86,24 @@ public class Operations {
         this.operationTime = operationTime;
     }
 
+    public LocalDate getOperationDate() {
+        return operationDate;
+    }
+
+    public void setOperationDate(LocalDate operationDate) {
+        this.operationDate = operationDate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Operations)) return false;
+        Operations that = (Operations) o;
+        return operationId == that.operationId && Objects.equals(account, that.account) && Objects.equals(operationType, that.operationType) && Objects.equals(amount, that.amount) && Objects.equals(operationTime, that.operationTime);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(operationId, account, operationType, amount, operationTime);
+    }
 }

@@ -22,11 +22,10 @@ public class Account {
     private Integer amount;
 
 
-    @OneToMany(mappedBy = "accountId")
-    private List<Operations> operationsList;
+//    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Operations> operationsList;
 
-    public Account(){
-
+    public Account() {
     }
 
     public Account(int id, Integer balance, Integer amount) {
@@ -34,6 +33,7 @@ public class Account {
         this.balance = balance;
         this.amount = amount;
     }
+
     public int getId() {
         return id;
     }
@@ -58,11 +58,11 @@ public class Account {
         this.amount = amount;
     }
 
-    public List<Operations> getOperationsList() {
-        return operationsList;
-    }
-
-    public void setOperationsList(List<Operations> operationsList) {
-        this.operationsList = operationsList;
-    }
+//    public List<Operations> getOperationsList() {
+//        return operationsList;
+//    }
+//
+//    public void setOperationsList(List<Operations> operationsList) {
+//        this.operationsList = operationsList;
+//    }
 }
